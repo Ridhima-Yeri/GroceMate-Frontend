@@ -11,8 +11,8 @@ import {
 } from '../utils/mockOrdersApi';
 
 const API_BASE =
-  (typeof window !== 'undefined' && window.ENV_API_URL)
-    ? window.ENV_API_URL
+  (typeof window !== 'undefined' && (window as any).ENV_API_URL)
+    ? (window as any).ENV_API_URL
     : (import.meta.env.VITE_API_URL || 'http://localhost:5000/api');
 
 function getToken() {
