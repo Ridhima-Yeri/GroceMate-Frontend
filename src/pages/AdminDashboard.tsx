@@ -10,7 +10,10 @@ import {
   formatOrdersForAdmin 
 } from '../utils/mockOrdersApi';
 
-const API_BASE = 'http://localhost:5000/api/admin';
+const API_BASE =
+  (typeof window !== 'undefined' && window.ENV_API_URL)
+    ? window.ENV_API_URL
+    : (import.meta.env.VITE_API_URL || 'http://localhost:5000/api');
 
 function getToken() {
   return localStorage.getItem('token');
@@ -128,9 +131,9 @@ const AdminDashboard: React.FC = () => {
     if (window.location.hostname === 'localhost' && !window.location.port.includes('5000')) {
       try {
         // Get users, categories, and products from mock data
-        const usersRes = await apiGet('/users');
-        const categoriesRes = await apiGet('/categories');
-        const productsRes = await apiGet('/products');
+        const usersRes = await apiGet('/admin/users');
+        const categoriesRes = await apiGet('/admin/categories');
+        const productsRes = await apiGet('/admin/products');
         
         // Get orders from our mock API
         const ordersFromStorage = await getAllOrders();
@@ -150,10 +153,10 @@ const AdminDashboard: React.FC = () => {
     }
     
     // For API implementation
-    const usersRes = await apiGet('/users');
-    const categoriesRes = await apiGet('/categories');
-    const productsRes = await apiGet('/products');
-    const ordersRes = await apiGet('/orders');
+    const usersRes = await apiGet('/admin/users');
+    const categoriesRes = await apiGet('/admin/categories');
+    const productsRes = await apiGet('/admin/products');
+    const ordersRes = await apiGet('/admin/orders');
     setUsers(Array.isArray(usersRes) ? usersRes : []);
     setCategories(Array.isArray(categoriesRes) ? categoriesRes : []);
     setProducts(Array.isArray(productsRes) ? productsRes : []);
@@ -167,7 +170,7 @@ const AdminDashboard: React.FC = () => {
     setLoading(true);
     try {
       const updateData = { role: userForm.role };
-      const response = await apiPut(`/users/${userForm.id}`, updateData);
+      const response = await apiPut(`/admin/users/${userForm.id}`, updateData);
       
       if (!response.error) {
         const updatedUsers = users.map(user => 
@@ -211,7 +214,7 @@ const AdminDashboard: React.FC = () => {
     if (window.confirm('Are you sure you want to delete this user?')) {
       setLoading(true);
       try {
-        const response = await apiDelete(`/users/${id}`);
+        const response = await apiDelete(`/admin/users/${id}`);
         if (!response.error) {
           setUsers(users.filter(user => user._id !== id));
           setNotification({
@@ -251,12 +254,12 @@ const AdminDashboard: React.FC = () => {
       }
 
       const response = categoryForm.id 
-        ? await apiPut(`/categories/${categoryForm.id}`, categoryForm)
-        : await apiPost('/categories', categoryForm);
+        ? await apiPut(`/admin/categories/${categoryForm.id}`, categoryForm)
+        : await apiPost('/admin/categories', categoryForm);
 
       if (!response.error) {
         // Refresh categories list immediately
-        const updatedCategories = await apiGet('/categories');
+        const updatedCategories = await apiGet('/admin/categories');
         setCategories(Array.isArray(updatedCategories) ? updatedCategories : []);
         
         setCategoryForm({ name: '', id: '' });
@@ -292,9 +295,9 @@ const AdminDashboard: React.FC = () => {
     if (window.confirm('Are you sure you want to delete this category?')) {
       setLoading(true);
       try {
-        const response = await apiDelete(`/categories/${id}`);
+        const response = await apiDelete(`/admin/categories/${id}`);
         if (!response.error) {
-          const updatedCategories = await apiGet('/categories');
+          const updatedCategories = await apiGet('/admin/categories');
           setCategories(Array.isArray(updatedCategories) ? updatedCategories : []);
           setNotification({
             show: true,
@@ -403,7 +406,7 @@ const AdminDashboard: React.FC = () => {
       }
     
       // For API implementation
-      const response = await apiPut(`/orders/${orderStatusForm.id}/status`, {
+      const response = await apiPut(`/admin/orders/${orderStatusForm.id}/status`, {
         deliveryStatus: orderStatusForm.status
       });
 
@@ -494,12 +497,12 @@ const AdminDashboard: React.FC = () => {
       console.log('Product data being sent:', productData); // Debug log
 
       const response = productForm.id 
-        ? await apiPut(`/products/${productForm.id}`, productData)
-        : await apiPost('/products', productData);
+        ? await apiPut(`/admin/products/${productForm.id}`, productData)
+        : await apiPost('/admin/products', productData);
 
       if (!response.error) {
         // Refresh products list
-        const updatedProducts = await apiGet('/products');
+        const updatedProducts = await apiGet('/admin/products');
         setProducts(Array.isArray(updatedProducts) ? updatedProducts : []);
         
         setProductForm({ name: '', price: '', image: '', category: '', featured: false, id: '' });
@@ -537,8 +540,8 @@ const AdminDashboard: React.FC = () => {
     });
   }
   async function handleProductDelete(id: string) {
-    await apiDelete(`/products/${id}`);
-    setProducts(await apiGet('/products'));
+    await apiDelete(`/admin/products/${id}`);
+    setProducts(await apiGet('/admin/products'));
   }
 
   return (
