@@ -1,5 +1,5 @@
 // Use Vite env variable for API URL (set VITE_API_URL in Render dashboard)
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 const API_BASE = API_URL;
 
 // Extend the Window interface to include ENV_API_URL
