@@ -1,18 +1,5 @@
 // Use Vite env variable for API URL (set VITE_API_URL in Render dashboard)
-const API_URL = import.meta.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-const API_BASE = API_URL;
-
-// Extend the Window interface to include ENV_API_URL
-declare global {
-  interface Window {
-    ENV_API_URL?: string;
-  }
-}
-
-// Fix the process not defined error
-const FINAL_API_URL = typeof window !== 'undefined' && window.ENV_API_URL 
-  ? window.ENV_API_URL 
-  : 'http://localhost:5000/api';
+const API_BASE = import.meta.env.VITE_API_URL || 'https://grocemate-backend.onrender.com/api';
 
 // Helper function to check server connection
 const checkServerConnection = async () => {
@@ -249,7 +236,7 @@ export const getCategories = async () => {
 // Get product by ID
 export const getProductById = async (id: string) => {
   try {
-    const response = await fetch(`${API_URL}/products/${id}`);
+    const response = await fetch(`${API_BASE}/products/${id}`);
     const data = await response.json();
     
     return response.ok 
@@ -274,7 +261,7 @@ export const addProduct = async (productData: {
     const token = localStorage.getItem('token');
     if (!token) return { error: true, message: 'Authentication required' };
 
-    const response = await fetch(`${API_URL}/products`, {
+    const response = await fetch(`${API_BASE}/products`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -309,11 +296,24 @@ export const updateProduct = async (
     const token = localStorage.getItem('token');
     if (!token) return { error: true, message: 'Authentication required' };
 
-    const response = await fetch(`${API_URL}/products/${id}`, {
+    const response = await fetch(`${API_BASE}/products/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(productData)
+    });
+
+    const data = await response.json();
+    return response.ok 
+      ? { error: false, data } 
+      : { error: true, message: data.message || 'Failed to update product' };
+  } catch (error) {
+    console.error('API error:', error);
+    return { error: true, message: 'Network error' };
+  }
+};
       },
       body: JSON.stringify(productData)
     });
