@@ -80,7 +80,7 @@ const useAccessibleModal = () => {
   return { modalRef, openModal, closeModal };
 };
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE = import.meta.env.VITE_API_URL;
 
 const Profile: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
