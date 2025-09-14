@@ -43,12 +43,14 @@ const Home: React.FC = () => {
     const fetchData = async () => {
       try {
         const [categoriesResponse, productsResponse] = await Promise.all([
-          getCategories(),
+          fetch(`${import.meta.env.VITE_API_URL}/categories`),
           getProducts()
         ]);
         
-        if (!categoriesResponse.error) {
-          setCategories(categoriesResponse.data?.slice(0, 6) || []);
+        const categoriesData = await categoriesResponse.json();
+        
+        if (!categoriesData.error) {
+          setCategories(categoriesData.data?.slice(0, 6) || []);
         }
         
         if (!productsResponse.error) {

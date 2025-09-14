@@ -80,6 +80,8 @@ const useAccessibleModal = () => {
   return { modalRef, openModal, closeModal };
 };
 
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
 const Profile: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(null);
   const [showToast, setShowToast] = useState(false);
@@ -103,8 +105,6 @@ const Profile: React.FC = () => {
   const mainContentRef = useRef<HTMLDivElement>(null);
   
   // Define simple setters for modal state instead of having multiple close functions
-
-  const serverUrl = 'http://localhost:5000'; // Update this with your actual server URL
 
   // Create refs for focus management
   const modalCloseRef = useRef<HTMLIonButtonElement>(null);
@@ -335,7 +335,7 @@ const Profile: React.FC = () => {
 
   // Get full avatar URL if it's a relative path
   const avatarUrl = user.avatar && !user.avatar.startsWith('http') && !user.avatar.startsWith('data:') 
-    ? `${serverUrl}${user.avatar}` 
+    ? `${API_BASE}${user.avatar}` 
     : user.avatar;
 
   return (
