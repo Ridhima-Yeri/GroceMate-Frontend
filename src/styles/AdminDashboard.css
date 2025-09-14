@@ -755,27 +755,26 @@
 
 /* Fixed header with proper spacing */
 .page-header {
- padding: calc(var(--ion-safe-area-top, 0) + 56px) 3rem;
   padding: calc(var(--ion-toolbar-height, 56px) + 1.5rem) 1.5rem 1rem !important; /* Ensure header is below toolbar */
-  background: var(--ion-background-color);
-  border-bottom: 1px solid var(--ion-border-color);
-  margin-bottom: 0.5rem;
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  box-sizing: border-box;
+  background: var(--ion-background-color) !important;
+  border-bottom: 1px solid var(--ion-border-color) !important;
+  margin-bottom: 1.5rem !important;
+  position: relative !important;
+  z-index: 1 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
   .page-header {
-    padding: calc(var(--ion-safe-area-top, 0) + 48px) 1rem 0.75rem;
+    padding: calc(var(--ion-toolbar-height, 56px) + 1rem) 1rem 0.75rem !important;
   }
 }
 
 @media (max-width: 480px) {
   .page-header {
-    padding: calc(var(--ion-safe-area-top, 0) + 48px) 0.75rem 0.75rem;
+    padding: calc(var(--ion-toolbar-height, 56px) + 0.75rem) 0.75rem 0.75rem !important;
   }
 }
 

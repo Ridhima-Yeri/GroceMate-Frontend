@@ -459,18 +459,15 @@ ion-header ion-title {
 /* Responsive Styles */
 @media (max-width: 600px) {
   .orders-header {
-    padding: 1.5rem 0.75rem 1rem !important;
+    padding: calc(var(--ion-toolbar-height, 56px) + 0.75rem) 0.75rem 1rem !important;
     margin-top: 0.5rem !important;
   }
-  
   .orders-page .orders-title {
     font-size: 1.8rem !important;
   }
-  
   .orders-container {
     padding: 0 0.75rem;
   }
-
   .order-card {
     padding: 1rem;
   }
