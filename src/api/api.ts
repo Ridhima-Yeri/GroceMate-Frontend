@@ -1,4 +1,6 @@
-const API_BASE = 'http://localhost:5000/api';
+// Use Vite env variable for API URL (set VITE_API_URL in Render dashboard)
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_BASE = API_URL;
 
 // Extend the Window interface to include ENV_API_URL
 declare global {
@@ -8,7 +10,7 @@ declare global {
 }
 
 // Fix the process not defined error
-const API_URL = typeof window !== 'undefined' && window.ENV_API_URL 
+const FINAL_API_URL = typeof window !== 'undefined' && window.ENV_API_URL 
   ? window.ENV_API_URL 
   : 'http://localhost:5000/api';
 
