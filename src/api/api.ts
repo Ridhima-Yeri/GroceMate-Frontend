@@ -314,16 +314,4 @@ export const updateProduct = async (
     return { error: true, message: 'Network error' };
   }
 };
-      },
-      body: JSON.stringify(productData)
-    });
 
-    const data = await response.json();
-    return response.ok 
-      ? { error: false, data } 
-      : { error: true, message: data.message || 'Failed to update product' };
-  } catch (error) {
-    console.error('API error:', error);
-    return { error: true, message: 'Network error' };
-  }
-};
